@@ -12,11 +12,13 @@
     "@google-cloud/local-auth": "^2.1.0",
     "@next/font": "13.0.7",
     "@nextui-org/react": "^1.0.0-beta.10",
+    "axios": "^1.2.1",
     "cron": "^2.1.0",
     "eslint": "8.30.0",
     "eslint-config-next": "13.0.7",
     "googleapis": "^105.0.0",
     "next": "13.0.7",
+    "node-cron": "^3.0.2",
     "node-fetch": "^3.3.0",
     "react": "18.2.0",
     "react-dom": "18.2.0"
