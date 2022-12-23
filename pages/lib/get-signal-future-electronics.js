@@ -1,17 +1,17 @@
 import axios from "axios"
 import { toast } from "react-hot-toast"
-import { FUTURE_ELECTRONICS_KEY, FUTURE_ELECTRONICS_URL } from "../../consts"
+import { NEXT_PUBLIC_FUTURE_ELECTRONICS_KEY, NEXT_PUBLIC_FUTURE_ELECTRONICS_URL } from "../../consts"
 
 const getFutureElectronics = async (partNumber, lookupType) => {
     try {
         const config = {
             method: 'get',
-            url: `${FUTURE_ELECTRONICS_URL}/lookup?part_number=${partNumber}&lookup_type=${lookupType}`,
+            url: `${NEXT_PUBLIC_FUTURE_ELECTRONICS_URL}/lookup?part_number=${partNumber}&lookup_type=${lookupType}`,
             headers: {
                 'Accept': 'application/json,text/javascript',
                 // 'host': 'api.orbweaver.com',
                 'Content-Type': 'application/json',
-                'x-orbweaver-licensekey': FUTURE_ELECTRONICS_KEY
+                'x-orbweaver-licensekey': NEXT_PUBLIC_FUTURE_ELECTRONICS_KEY
             }
         };
 

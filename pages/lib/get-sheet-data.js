@@ -1,20 +1,20 @@
 const { google } = require('googleapis')
-const { GOOGLE_SHEETS_CLIENT_EMAIL, GOOGLE_SHEETS_PRIVATE_KEY, SPREADSHEET_ID } = require('../../consts')
+const { NEXT_PUBLIC_GOOGLE_SHEETS_CLIENT_EMAIL, NEXT_PUBLIC_GOOGLE_SHEETS_PRIVATE_KEY, NEXT_PUBLIC_SPREADSHEET_ID } = require('../../consts')
 
 const getSheetData = async () => {
   try {
     const target = ['https://www.googleapis.com/auth/spreadsheets.readonly'];
     const jwt = new google.auth.JWT(
-      GOOGLE_SHEETS_CLIENT_EMAIL,
+      NEXT_PUBLIC_GOOGLE_SHEETS_CLIENT_EMAIL,
       null,
-      (GOOGLE_SHEETS_PRIVATE_KEY || '').replace(/\\n/g, '\n'),
+      (NEXT_PUBLIC_GOOGLE_SHEETS_PRIVATE_KEY || '').replace(/\\n/g, '\n'),
       target
     );
 
     const sheetName = 'all'
     const sheets = google.sheets({ version: 'v4', auth: jwt });
     const response = await sheets.spreadsheets.values.get({
-      spreadsheetId: SPREADSHEET_ID,
+      spreadsheetId: NEXT_PUBLIC_SPREADSHEET_ID,
       range: sheetName,
     });
 
