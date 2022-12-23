@@ -1,11 +1,8 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from '@next/font/google'
 // import styles from '../styles/Home.module.css'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Box, Button, CircularProgress, FormControl, InputLabel, List, ListItem, ListItemButton, ListItemText, MenuItem, Select, TextField, Typography } from '@mui/material'
-import getFutureElectronics from './lib/get-signal-future-electronics'
-import mapElectronicsData from './lib/map-single-electronics-data'
+import getFutureElectronics from '../lib/get-signal-future-electronics'
+import mapElectronicsData from '../lib/map-single-electronics-data'
 import { makeStyles } from "@mui/styles";
 import EnhancedTable from '../components/electronics-table'
 import { toast } from 'react-hot-toast'

@@ -1,5 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import getSheetData from '../lib/get-sheet-data';
+import getSheetData from '../../lib/get-sheet-data';
 
 export default async function handler(req, res) {
   try {

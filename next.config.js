@@ -1,9 +1,9 @@
 /** @type {import('next').NextConfig} */
 const cron = require('node-cron');
 const axios = require('axios');
-const getSheetData = require('./pages/lib/get-sheet-data');
-const sendEmail = require('./pages/lib/sendEmail');
-const getMultipleFutureElectronics = require('./pages/lib/get-multiple-future-electronics');
+const getSheetData = require('./lib/get-sheet-data');
+const sendEmail = require('./lib/sendEmail');
+const getMultipleFutureElectronics = require('./lib/get-multiple-future-electronics');
 
 const schedule6AM = '0 24 7 * * *'
 cron.schedule(schedule6AM, async () => { // every day at 10:05:25 => 25 5 10 * * *
@@ -52,7 +52,17 @@ const nextConfig = {
   images: {
     domains: ['media.futureelectronics.com'],
   },
-
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.resolve.fallback.fs = false;
+      config.resolve.fallback.child_process = false;
+      config.resolve.fallback.net = false;
+      config.resolve.fallback.dns = false;
+      config.resolve.fallback.tls = false;
+      config.resolve.fallback.http2 = false;
+    }
+    return config;
+  },
 
   publicRuntimeConfig: {
     // NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
