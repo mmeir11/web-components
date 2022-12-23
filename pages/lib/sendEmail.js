@@ -1,4 +1,4 @@
-const { sgMail } = require('../../utility/sendgrid')
+const { sgMail } = require('../utility/sendgrid')
 
 const sendEmail = async ({ to, from, subject, text, html, templateID }) => {
     try {
