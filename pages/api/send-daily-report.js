@@ -5,16 +5,20 @@ import mapMultipleElectronicsData from "../../lib/map-multiple-electronics-data.
 
 const sendDailyReport = async () => {
     try {
+        console.log('sendDailyReport');
+        console.log('getting sheet');
         const sheetDataResponse = await axios.get(`${SERVER_URL}/api/get-sheet`)
 
         if (sheetDataResponse.status !== 200) {
             throw new Error('failed to get sheet data')
         }
 
+        console.log('get sheet success');
         const { sheetData } = sheetDataResponse.data
         const parts = sheetData.map((row) => row.partNumber)
 
-        // TODO: remove the temp and return the getMultiple... function
+        console.log('Get Multiple Future Electronics');
+
         const multipleElectronicsData = await getMultipleFutureElectronics(parts)
         const mappedMultipleElectronicsData = mapMultipleElectronicsData(multipleElectronicsData)
 
@@ -37,6 +41,8 @@ const sendDailyReport = async () => {
             offersNotFound: offersNotFoundAsExcelData,
         }
 
+        console.log('Send Report Email Response', { inStock: inStockAsExcelData.length });
+
         const sendReportEmailResponse = await axios({
             method: 'post',
             url: `${SERVER_URL}/api/send-report-email`,
@@ -45,7 +51,7 @@ const sendDailyReport = async () => {
 
         const sendReportEmailData = sendReportEmailResponse.data
 
-        console.log({ sendReportEmailData })
+        console.log('send daily report finished', { sendReportEmailData })
     } catch (err) {
         console.error(err);
     }
