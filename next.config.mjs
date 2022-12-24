@@ -1,13 +1,14 @@
 /** @type {import('next').NextConfig} */
 import axios from 'axios'
 import cron from 'node-cron'
-import { SERVER_URL, SCHEDULE_DAILY_REPORT } from './constants.js'
+// import { SERVER_URL } from './constants.js'
 // import sendDailyReport from './pages/api/send-daily-report.js'
 
-// const schedule6AM = SCHEDULE_DAILY_REPORT
-cron.schedule(SCHEDULE_DAILY_REPORT, async () => {
+const schedule6AM =  '00 00 7 * * *'
+cron.schedule(schedule6AM, async () => {
   try {
-    const response = await axios(`${SERVER_URL}/api/send-daily-report`)
+    // const response = await axios(`${SERVER_URL}/api/send-daily-report`)
+    const response = await axios(`https://bejewelled-cucurucho-1e9607.netlify.app/api/send-daily-report`)
 
     console.log(response);
   }
