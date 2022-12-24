@@ -1,11 +1,16 @@
 // import styles from '../styles/Home.module.css'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Box, Button, CircularProgress, FormControl, InputLabel, List, ListItem, ListItemButton, ListItemText, MenuItem, Select, TextField, Typography } from '@mui/material'
 import getFutureElectronics from '../lib/get-signal-future-electronics'
 import mapElectronicsData from '../lib/map-single-electronics-data'
 import { makeStyles } from "@mui/styles";
 import EnhancedTable from '../components/electronics-table'
 import { toast } from 'react-hot-toast'
+import getSheetData from '../lib/get-sheet-data';
+import axios from 'axios';
+import getMultipleFutureElectronics from '../lib/get-multiple-future-electronics';
+import multipleElectronicsData from '../tempDataElectronics';
+import mapMultipleElectronicsData from '../lib/map-multiple-electronics-data';
 
 const useStyles = makeStyles({
   root: {
@@ -19,20 +24,20 @@ const useStyles = makeStyles({
     alignContent: 'center',
     marginTop: 3
   }
-}, {name: 'Home'});
+}, { name: 'Home' });
 
 const Home = () => {
   const classes = useStyles()
 
   const [electronicsData, setElectronicsData] = useState([])
-  const [partNumber, setPartNumber] = useState('ML-1220')
+  const [partNumber, setPartNumber] = useState('ML-')
   const [lookupType, setLookupType] = useState('contains')
   const [isLoading, setIsLoading] = useState(false)
 
   const handleClickSearch = async (event) => {
     try {
       event.preventDefault()
-      if(partNumber.length < 3){
+      if (partNumber.length < 3) {
         toast.error('Part number need to be at least 3 chars')
         return
       }
@@ -52,16 +57,58 @@ const Home = () => {
     }
   }
 
-  useEffect(() => {
+  /* useEffect(() => {
     (async () => {
-      const electronicsData = await getFutureElectronics(partNumber, lookupType)
+      const sheetDataResponse = await axios.get('http://localhost:3000/api/get-sheet')
 
-      const mappedElectronicsData = mapElectronicsData(electronicsData)
+      if (sheetDataResponse.status !== 200) {
+        throw new Error('failed to get sheet data')
+      }
 
-      setElectronicsData(mappedElectronicsData)
-      console.log(mappedElectronicsData);
+      const { sheetData } = sheetDataResponse.data
+      const parts = sheetData.map((row) => row.partNumber)
+
+      // TODO: remove the temp and return the getMultiple... function
+      debugger
+      const multipleElectronicsData = await getMultipleFutureElectronics(parts)
+      const mappedMultipleElectronicsData = mapMultipleElectronicsData(multipleElectronicsData)
+
+      const outOfStock = mappedMultipleElectronicsData.filter((electronic) => electronic?.offers.length > 0 && electronic.offers?.every((offer) => offer?.quantity === 0))
+      const inStock = mappedMultipleElectronicsData.filter((electronic) => electronic?.offers.length > 0 && electronic.offers?.some((offer) => offer?.quantity > 0))
+      const offersNotFound = mappedMultipleElectronicsData.filter((electronic) => !electronic?.offers.length)
+
+      const inStockAsExcelData = inStock.map((electronic) => {
+        const offer = electronic.offers?.find((offer) => offer?.quantity > 0)
+        const { quantity, manufacture, leadTime, leadTimeType, price } = offer
+
+        return [electronic.partNumber, quantity, manufacture, `${leadTime} ${leadTimeType}`, price]
+      })
+      const outOfStockAsExcelData = outOfStock.map((electronic) => [electronic.partNumber])
+      const offersNotFoundAsExcelData = offersNotFound.map((electronic) => [electronic.partNumber])
+
+      const sendReportEmailBody = {
+        inStock: inStockAsExcelData,
+        outOfStock: outOfStockAsExcelData,
+        offersNotFound: offersNotFoundAsExcelData,
+      }
+
+      const sendReportEmailResponse = await axios({
+        method: 'post',
+        url: 'http://localhost:3000/api/send-report-email',
+        data: sendReportEmailBody
+      })
+
+      const sendReportEmailData = sendReportEmailResponse.data
+
+
+      // const electronicsData = await getFutureElectronics(partNumber, lookupType)
+
+      // const mappedElectronicsData = mapElectronicsData(electronicsData)
+
+      // setElectronicsData(mappedElectronicsData)
+      // console.log(mappedElectronicsData);
     })()
-  }, [])
+  }, []) */
 
   const headers = useMemo(() => [
     {
@@ -115,7 +162,7 @@ const Home = () => {
           </Select>
         </FormControl>
         {isLoading ? <CircularProgress sx={{ margin: 2 }} size={25} />
-          : (<Button type='submit' sx={{padding: 3}}>
+          : (<Button type='submit' sx={{ padding: 3 }}>
             Search
           </Button>)}
       </form>

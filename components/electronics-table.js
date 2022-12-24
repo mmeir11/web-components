@@ -1,25 +1,21 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { alpha } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import TableSortLabel from '@mui/material/TableSortLabel';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
-import Checkbox from '@mui/material/Checkbox';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
-import DeleteIcon from '@mui/icons-material/Delete';
-import FilterListIcon from '@mui/icons-material/FilterList';
+import {
+    TableRow,
+    TableSortLabel,
+    Toolbar,
+    Typography,
+    Paper,
+    Box,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TablePagination,
+} from '@mui/material';
+
 import { visuallyHidden } from '@mui/utils';
 
 function createData(name, calories, fat, carbs, protein) {
@@ -78,39 +74,6 @@ function stableSort(array, comparator) {
     return stabilizedThis.map((el) => el[0]);
 }
 
-/* const headCells = [
-    {
-        id: 'name',
-        numeric: false,
-        disablePadding: true,
-        label: 'Dessert (100g serving)',
-    },
-    {
-        id: 'calories',
-        numeric: true,
-        disablePadding: false,
-        label: 'Calories',
-    },
-    {
-        id: 'fat',
-        numeric: true,
-        disablePadding: false,
-        label: 'Fat (g)',
-    },
-    {
-        id: 'carbs',
-        numeric: true,
-        disablePadding: false,
-        label: 'Carbs (g)',
-    },
-    {
-        id: 'protein',
-        numeric: true,
-        disablePadding: false,
-        label: 'Protein (g)',
-    },
-];
- */
 function EnhancedTableHead(props) {
     const { headers, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
 
@@ -187,13 +150,13 @@ EnhancedTableToolbar.propTypes = {
     title: PropTypes.string,
 };
 
-export default function EnhancedTable(props) {
-    const [order, setOrder] = React.useState('asc');
-    const [orderBy, setOrderBy] = React.useState('calories');
-    const [selected, setSelected] = React.useState([]);
-    const [page, setPage] = React.useState(0);
-    const [dense, setDense] = React.useState(false);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+const EnhancedTable = (props) => {
+    const [order, setOrder] = useState('asc');
+    const [orderBy, setOrderBy] = useState('calories');
+    const [selected, setSelected] = useState([]);
+    const [page, setPage] = useState(0);
+    const [dense, setDense] = useState(false);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
 
     const { headers, rows, title } = props
 
@@ -297,3 +260,5 @@ export default function EnhancedTable(props) {
         </Box >
     );
 }
+
+export default EnhancedTable
