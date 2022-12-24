@@ -1,10 +1,10 @@
 /** @type {import('next').NextConfig} */
 import axios from 'axios'
 import cron from 'node-cron'
-import { SERVER_URL } from './constants.js'
+import { SERVER_URL, SCHEDULE_DAILY_REPORT } from './constants.js'
 // import sendDailyReport from './pages/api/send-daily-report.js'
 
-const schedule6AM = '30 04 18 * * *'
+const schedule6AM = SCHEDULE_DAILY_REPORT
 cron.schedule(schedule6AM, async () => {
   try {
     const response = await axios(`${SERVER_URL}/api/send-daily-report`)
