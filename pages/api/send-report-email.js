@@ -1,7 +1,7 @@
 import createExcelInBase64 from "../../lib/createExcelInBase64";
 import * as XLSX from 'xlsx'
 import sendEmail from '../../lib/sendEmail'
-import { SENDGRID_FROM_EMAIL, SENDGRID_TO_EMAIL, NODE_ENV } from "../../constants";
+import { SENDGRID_FROM_EMAIL, SENDGRID_TO_EMAIL, NODE_ENV } from "../../constants.js";
 
 export default async function handler(req, res) {
     try {
