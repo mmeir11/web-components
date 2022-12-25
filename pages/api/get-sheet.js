@@ -30,10 +30,10 @@ const getSheetData = async (req, res) => {
 
 
     res.status(200).json({ sheetData })
+    return { sheetData }
   } catch (err) {
     console.log(err);
   }
-  return [];
 }
 
 export default getSheetData

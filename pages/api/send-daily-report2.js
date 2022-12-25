@@ -2,25 +2,19 @@ import axios from "axios"
 import { SERVER_URL } from "../../constants.js"
 import getMultipleFutureElectronics from "../../lib/get-multiple-future-electronics.js"
 import mapMultipleElectronicsData from "../../lib/map-multiple-electronics-data.js"
-import getSheetData from './get-sheet.js'
 
 const sendDailyReport = async (req, res) => {
     try {
         console.log('sendDailyReport');
         console.log('getting sheet');
-        // const sheetDataResponse = await axios.get(`${SERVER_URL}/api/get-sheet`)
-        const res1 = { status: () => ({ json: () => { } }) }
-        const sheetDataResponse = await getSheetData({}, res1)
-
-        const { sheetData } = sheetDataResponse
-        return res.json({ sheetData })
+        const sheetDataResponse = await axios.get(`${SERVER_URL}/api/get-sheet`)
 
         if (sheetDataResponse.status !== 200) {
             throw new Error('failed to get sheet data')
         }
 
         console.log('get sheet success');
-        const { sheetData2 } = sheetDataResponse.data
+        const { sheetData } = sheetDataResponse.data
         const parts = sheetData.map((row) => row.partNumber)
 
         console.log('Get Multiple Future Electronics');
