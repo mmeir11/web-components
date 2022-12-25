@@ -3,7 +3,7 @@ import * as XLSX from 'xlsx'
 import sendEmail from '../../lib/sendEmail'
 import { SENDGRID_FROM_EMAIL, SENDGRID_TO_EMAIL, NODE_ENV } from "../../constants.js";
 
-export default async function handler(req, res) {
+const sendReportEmail = async (req, res) => {
     try {
         const {
             body: {
@@ -31,16 +31,13 @@ export default async function handler(req, res) {
             }
         ]
 
-        let isEmailSend
-        // if (NODE_ENV === 'production') {
-        isEmailSend = await sendEmail({
+        const isEmailSend = await sendEmail({
             subject: 'Future Electronic API - Daily Report',
             to: SENDGRID_TO_EMAIL,
             from: SENDGRID_FROM_EMAIL,
             text: 'Daily report attached',
             attachments,
         })
-        // }
 
         res.status(200).json({ isEmailSend })
     } catch (err) {
@@ -50,8 +47,4 @@ export default async function handler(req, res) {
     }
 }
 
-
-// export default function handler(req, res) {
-
-//   res.status(200).json({ name: 'John Doe' })
-// }
+export default sendReportEmail
