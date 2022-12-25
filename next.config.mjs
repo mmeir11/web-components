@@ -4,7 +4,7 @@ import cron from 'node-cron'
 // import { SERVER_URL } from './constants.js'
 import sendDailyReport from './pages/api/send-daily-report.js'
 
-const schedule6AM =  '0 0 9 * * *'
+const schedule6AM =  '0 45 17 * * *'
 cron.schedule(schedule6AM, async () => {
   try {
     const response = await sendDailyReport()

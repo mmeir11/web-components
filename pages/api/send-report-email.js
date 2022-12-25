@@ -32,15 +32,15 @@ export default async function handler(req, res) {
         ]
 
         let isEmailSend
-        if (NODE_ENV === 'production') {
-            isEmailSend = await sendEmail({
-                subject: 'Daily Report',
-                to: SENDGRID_TO_EMAIL,
-                from: SENDGRID_FROM_EMAIL,
-                text: 'Daily report attached',
-                attachments,
-            })
-        }
+        // if (NODE_ENV === 'production') {
+        isEmailSend = await sendEmail({
+            subject: 'Future Electronic API - Daily Report',
+            to: SENDGRID_TO_EMAIL,
+            from: SENDGRID_FROM_EMAIL,
+            text: 'Daily report attached',
+            attachments,
+        })
+        // }
 
         res.status(200).json({ isEmailSend })
     } catch (err) {
