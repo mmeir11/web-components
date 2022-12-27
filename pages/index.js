@@ -3,7 +3,6 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Box, Button, CircularProgress, FormControl, InputLabel, List, ListItem, ListItemButton, ListItemText, MenuItem, Select, TextField, Typography } from '@mui/material'
 import getFutureElectronics from '../lib/get-signal-future-electronics'
 import mapElectronicsData from '../lib/map-single-electronics-data'
-import { makeStyles } from "@mui/styles";
 import EnhancedTable from '../components/electronics-table'
 import { toast } from 'react-hot-toast'
 import getSheetData from '../lib/get-sheet-data';
@@ -12,22 +11,7 @@ import getMultipleFutureElectronics from '../lib/get-multiple-future-electronics
 import multipleElectronicsData from '../tempDataElectronics';
 import mapMultipleElectronicsData from '../lib/map-multiple-electronics-data';
 
-const useStyles = makeStyles({
-  root: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100%',
-    padding: 26
-  },
-  searchBar: {
-    display: 'flex',
-    alignContent: 'center',
-    marginTop: 3
-  }
-}, { name: 'Home' });
-
 const Home = () => {
-  const classes = useStyles()
 
   const [electronicsData, setElectronicsData] = useState([])
   const [partNumber, setPartNumber] = useState('ML-')
@@ -138,8 +122,8 @@ const Home = () => {
   ], [])
 
   return (
-    <div className={classes.root}>
-      <form className={classes.searchBar} onSubmit={handleClickSearch}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: 26 }}>
+      <form onSubmit={handleClickSearch} style={{ display: 'flex', alignContent: 'center', marginTop: 3 }}>
         <TextField
           value={partNumber}
           onChange={(e) => setPartNumber(e.target.value)}
