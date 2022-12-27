@@ -3,6 +3,7 @@ const schedule6AM =  '0 58 15 * * *'
 
 const nextConfig = {
   reactStrictMode: false,
+  output: "standalone",
   images: {
     domains: ['media.futureelectronics.com'],
   },
