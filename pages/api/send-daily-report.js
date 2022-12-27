@@ -4,13 +4,12 @@ import mapMultipleElectronicsData from "../../lib/map-multiple-electronics-data.
 import { google } from 'googleapis'
 import { GOOGLE_SHEETS_CLIENT_EMAIL, GOOGLE_SHEETS_PRIVATE_KEY, SPREADSHEET_ID, SENDGRID_FROM_EMAIL, SENDGRID_TO_EMAIL } from '../../constants.js'
 import createExcelInBase64 from "../../lib/createExcelInBase64";
-// import * as XLSX from 'xlsx'
-import { utils } from 'xlsx'
+import * as XLSX from 'xlsx'
 import sendEmail from '../../lib/sendEmail'
 
 const sendReportEmail = async ({ inStock, outOfStock, offersNotFound }) => {
     try {
-        const workbook = utils.book_new();
+        const workbook = XLSX.utils.book_new();
 
         await createExcelInBase64({ workbook, sheetName: 'In Stock', data: inStock, headers: ['Part Number', 'Quantity', 'Manufacture', 'Lead Time', 'Price'] })
         await createExcelInBase64({ workbook, sheetName: 'Out Of Stock', data: outOfStock, headers: ['Part Number'] })

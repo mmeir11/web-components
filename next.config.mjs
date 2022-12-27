@@ -6,6 +6,7 @@ const nextConfig = {
   output: "standalone",
   images: {
     domains: ['media.futureelectronics.com'],
+    unoptimized: true,
   },
   webpack: (config, { isServer }) => {
     if (!isServer) {
