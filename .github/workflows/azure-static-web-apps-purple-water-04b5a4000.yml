@@ -31,7 +31,7 @@ jobs:
           api_build_command: 'rm -rf $SOURCE_DIR/node_modules/@next/swc-* && rm -rf $SOURCE_DIR/.next/cache'
           app_location: "/" # App source code path
           verbose: true
-          api_location: "api" # Api source code path - optional
+          api_location: "/pages/api" # Api source code path - optional
           output_location: "out" # Built app content directory - optional
           ###### End of Repository/Build Configurations ######
 
