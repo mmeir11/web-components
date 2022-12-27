@@ -8,7 +8,6 @@ import { toast } from 'react-hot-toast'
 import getSheetData from '../lib/get-sheet-data';
 import axios from 'axios';
 import getMultipleFutureElectronics from '../lib/get-multiple-future-electronics';
-import multipleElectronicsData from '../tempDataElectronics';
 import mapMultipleElectronicsData from '../lib/map-multiple-electronics-data';
 
 const Home = () => {
