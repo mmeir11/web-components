@@ -27,9 +27,11 @@ const sendReportEmail = async ({ inStock, outOfStock, offersNotFound }) => {
             }
         ]
 
+        const to = SENDGRID_TO_EMAIL?.split(',')
+
         const isEmailSend = await sendEmail({
             subject: 'Future Electronic API - Daily Report',
-            to: SENDGRID_TO_EMAIL,
+            to,
             from: SENDGRID_FROM_EMAIL,
             text: 'Daily report attached',
             attachments,
