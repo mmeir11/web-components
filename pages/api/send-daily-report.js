@@ -11,9 +11,9 @@ const sendReportEmail = async ({ inStock, outOfStock, offersNotFound }) => {
     try {
         const workbook = XLSX.utils.book_new();
 
-        await createExcelInBase64({ workbook, sheetName: 'In Stock', data: inStock, headers: ['Part Number', 'Quantity', 'Manufacture', 'Lead Time', 'Price'] })
-        await createExcelInBase64({ workbook, sheetName: 'Out Of Stock', data: outOfStock, headers: ['Part Number'] })
-        const base64Excel = await createExcelInBase64({ workbook, sheetName: 'Offers Not Found', data: offersNotFound, headers: ['Part Number'] })
+        await createExcelInBase64({ workbook, sheetName: 'In Stock', data: inStock, headers: ['Part Number', 'Source', 'Quantity', 'Manufacture', 'Lead Time', 'Price'] })
+        await createExcelInBase64({ workbook, sheetName: 'Out Of Stock', data: outOfStock, headers: ['Part Number', 'Source'] })
+        const base64Excel = await createExcelInBase64({ workbook, sheetName: 'Offers Not Found', data: offersNotFound, headers: ['Part Number', 'Source'] })
 
         // const excelFile = await XLSX.writeFile(workbook, 'excel.xlsx')
 
@@ -80,7 +80,7 @@ const getSheetData = async () => {
     }
 }
 
-const parseMultipleElectronicsToExcel = (multipleElectronicsData) => {
+const parseMultipleElectronicsToExcel = (multipleElectronicsData, partsStock) => {
     const mappedMultipleElectronicsData = mapMultipleElectronicsData(multipleElectronicsData)
 
     const outOfStock = mappedMultipleElectronicsData.filter((electronic) => electronic?.offers.length > 0 && electronic.offers?.every((offer) => offer?.quantity === 0))
@@ -90,11 +90,13 @@ const parseMultipleElectronicsToExcel = (multipleElectronicsData) => {
     const inStockAsExcelData = inStock.map((electronic) => {
         const offer = electronic.offers?.find((offer) => offer?.quantity > 0)
         const { quantity, manufacture, leadTime, leadTimeType, price, currency } = offer
+        const partNumber = electronic.partNumber
+        const stock = partsStock[partNumber];
 
-        return [electronic.partNumber, quantity, manufacture, `${leadTime} ${leadTimeType}`, `${price} ${currency}`]
+        return [partNumber, stock, quantity, manufacture, `${leadTime} ${leadTimeType}`, `${price} ${currency}`]
     })
-    const outOfStockAsExcelData = outOfStock.map((electronic) => [electronic.partNumber])
-    const offersNotFoundAsExcelData = offersNotFound.map((electronic) => [electronic.partNumber])
+    const outOfStockAsExcelData = outOfStock.map((electronic) => [electronic.partNumber, partsStock[electronic.partNumber]])
+    const offersNotFoundAsExcelData = offersNotFound.map((electronic) => [electronic.partNumber, partsStock[electronic.partNumber]])
 
     return { inStockAsExcelData, outOfStockAsExcelData, offersNotFoundAsExcelData }
 }
@@ -111,6 +113,13 @@ const sendDailyReport = async (req, res) => {
 
         const parts = sheetData.map((row) => row.partNumber)
 
+        const partsStock = {}
+        sheetData.forEach((row) => {
+            const { partNumber, stock } = row
+
+            partsStock[partNumber] = stock
+        })
+
         console.log('Get Multiple Future Electronics');
 
         const multipleElectronicsData = await getMultipleFutureElectronics(parts)
@@ -119,7 +128,7 @@ const sendDailyReport = async (req, res) => {
             inStockAsExcelData,
             outOfStockAsExcelData,
             offersNotFoundAsExcelData
-        } = parseMultipleElectronicsToExcel(multipleElectronicsData)
+        } = parseMultipleElectronicsToExcel(multipleElectronicsData, partsStock)
 
         const sendReportEmailBody = {
             inStock: inStockAsExcelData,
